@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save the Date — David &amp; Gonzalo | 26.02.2027</title>
+
+    <!-- Google Fonts: Great Vibes, Cormorant Garamond & Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        oliveDeep: '#4A5238',
+                        oliveBase: '#6B7256',
+                        oliveLight: '#90987D',
+                        ivoryBg: '#F8F6F2',
+                        stoneBorder: '#D8D2C5',
+                        goldAccent: '#C5B388',
+                        charcoalText: '#2C2C2C',
+                        backdropWarm: '#EBE7DF',
+                    },
+                    fontFamily: {
+                        script: ['"Great Vibes"', 'cursive'],
+                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+                        sans: ['"Montserrat"', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        ultra: '0.32em',
+                        editorial: '0.22em',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Configuración general y suavizado tipográfico */
+        body {
+            background-color: #EBE7DF;
+            color: #2C2C2C;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* Texturas sutiles editoriales */
+        .paper-ivory {
+            background-color: #F8F6F2;
+            background-image: radial-gradient(rgba(74, 82, 56, 0.04) 1px, transparent 0);
+            background-size: 18px 18px;
+        }
+
+        .paper-olive {
+            background-color: #4A5238;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+
+        /* Ampersand '&' estilizado en Cormorant Garamond itálica */
+        .editorial-amp {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-style: italic;
+            font-weight: 400;
+            font-size: 0.68em;
+            vertical-align: 0.08em;
+            margin: 0 0.14em;
+            display: inline-block;
+            opacity: 0.92;
+        }
+
+        /* =====================================================================
+           ESCENA 3D DEL SOBRE CERRADO (Secuencia por etapas para móviles)
+           ===================================================================== */
+        .envelope-stage {
+            perspective: 1200px;
+            transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .envelope-body {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            aspect-ratio: 16 / 11;
+            background: linear-gradient(145deg, #566042 0%, #4A5238 100%);
+            box-shadow: 0 24px 55px -12px rgba(44, 44, 44, 0.35), 0 4px 16px rgba(44, 44, 44, 0.15);
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .envelope-body:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Tarjeta interior que emerge recién después de abrirse la solapa */
+        .envelope-inner-card {
+            position: absolute;
+            left: 6%;
+            right: 6%;
+            top: 8%;
+            bottom: 8%;
+            background-color: #F8F6F2;
+            border: 1px solid #D8D2C5;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transform: translateY(0);
+            transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Solapas laterales e inferior del bolsillo frontal del sobre */
+        .envelope-pocket {
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* Solapa superior triangular en V con rotación 3D */
+        .envelope-top-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 58%;
+            z-index: 30;
+            transform-origin: top center;
+            backface-visibility: visible;
+            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 8px 10px rgba(25, 30, 18, 0.32));
+        }
+
+        .envelope-top-flap-shape {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #6B7256 0%, #4A5238 100%);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+        }
+
+        /* Sello de lacre en el vértice */
+        .wax-seal-btn {
+            position: absolute;
+            top: 56%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 40;
+            width: 64px;
+            height: 64px;
+            border-radius: 9999px;
+            background: radial-gradient(circle at 32% 30%, #D9C89E 0%, #B8A373 58%, #968255 100%);
+            box-shadow:
+                0 6px 16px rgba(26, 30, 20, 0.42),
+                inset 0 2px 4px rgba(255, 250, 235, 0.55),
+                inset 0 -3px 6px rgba(72, 60, 34, 0.45);
+            border: 2px solid rgba(248, 246, 242, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, opacity 0.25s ease;
+            animation: sealPulse 3.4s ease-in-out infinite;
+        }
+
+        .wax-seal-inner {
+            width: 48px;
+            height: 48px;
+            border-radius: 9999px;
+            border: 1px solid rgba(74, 82, 56, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes sealPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        /* Etapas controladas por clases JS */
+        .envelope-stage.step-flap .wax-seal-btn {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.7);
+            pointer-events: none;
+        }
+
+        .envelope-stage.step-flap .envelope-top-flap {
+            transform: rotateX(180deg);
+        }
+
+        /* Al pasar 90 grados, la solapa queda detrás de la tarjeta */
+        .envelope-stage.step-flap-behind .envelope-top-flap {
+            z-index: 5;
+        }
+
+        /* Recién ahora sube la tarjeta blanca por delante de la solapa abierta */
+        .envelope-stage.step-card-rise .envelope-inner-card {
+            transform: translateY(-56%) scale(1.03);
+        }
+
+        /* Fundido cruzado sutil hacia la tarjeta principal */
+        .envelope-stage.step-crossfade {
+            opacity: 0;
+            transform: scale(1.05);
+            pointer-events: none;
+        }
+
+        /* =====================================================================
+           TARJETA EDITORIAL REVELADA
+           ===================================================================== */
+        .invitation-wrapper {
+            opacity: 0;
+            transform: translateY(18px) scale(0.985);
+            transition: opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1), transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .invitation-wrapper.is-revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Animación de ondas de sonido en el reproductor */
+        .sound-bar {
+            width: 2px;
+            background-color: #F8F6F2;
+            border-radius: 9999px;
+            height: 4px;
+            transition: height 0.2s ease;
+        }
+
+        .is-playing .sound-bar:nth-child(1) { animation: eqBar 0.9s ease-in-out infinite; }
+        .is-playing .sound-bar:nth-child(2) { animation: eqBar 0.6s ease-in-out infinite 0.15s; }
+        .is-playing .sound-bar:nth-child(3) { animation: eqBar 1.1s ease-in-out infinite 0.3s; }
+        .is-playing .sound-bar:nth-child(4) { animation: eqBar 0.75s ease-in-out infinite 0.1s; }
+
+        @keyframes eqBar {
+            0%, 100% { height: 4px; }
+            50% { height: 14px; }
+        }
+
+        /* Modal suave */
+        .modal-overlay {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-panel {
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center selection:bg-oliveBase selection:text-ivoryBg">
+
+    <!-- Audio real de Lali en el mismo directorio ("Amor Es Presente.mp3") con respaldo automático en vista previa -->
+    <audio id="real-mp3-audio" loop preload="auto" src="Amor Es Presente.mp3"></audio>
+
+    <!-- Notificación Toast Discreta -->
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 transform -translate-y-2">
+        <div class="bg-oliveDeep text-ivoryBg font-sans text-[10px] tracking-editorial uppercase px-5 py-2.5 rounded-full shadow-lg border border-stoneBorder/30 flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-goldAccent"></span>
+            <span id="toast-msg">Evento agendado</span>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         1. ESCENA INICIAL: SOBRE 3D INTERACTIVO
+         ========================================================================= -->
+    <div id="envelope-stage" class="envelope-stage fixed inset-0 z-40 flex flex-col items-center justify-center px-5 bg-backdropWarm">
+        
+        <p class="font-sans text-[10px] tracking-ultra uppercase text-oliveDeep/80 mb-6 text-center">
+            Invitación Digital
+        </p>
+
+        <!-- Sobre en verde oliva profundo con solapa triangular y sello de lacre -->
+        <div id="envelope-trigger" role="button" tabindex="0" aria-label="Abrir sobre de invitación de David y Gonzalo" class="envelope-body rounded-sm cursor-pointer select-none">
+            
+            <!-- Tarjeta interior marfil que asoma después de abrirse la solapa -->
+            <div class="envelope-inner-card rounded-xs">
+                <span class="font-sans text-[8px] tracking-ultra uppercase text-oliveBase mb-1">Save the Date</span>
+                <p class="font-script text-3xl sm:text-4xl text-charcoalText leading-none">
+                    David <span class="editorial-amp text-oliveDeep">&amp;</span> Gonzalo
+                </p>
+                <span class="font-serif text-xs tracking-editorial text-oliveDeep mt-1.5">26 · 02 · 2027</span>
+            </div>
+
+            <!-- Pliegues laterales e inferior del bolsillo del sobre -->
+            <div class="envelope-pocket rounded-sm">
+                <svg class="w-full h-full" viewBox="0 0 380 261" preserveAspectRatio="none">
+                    <polygon points="0,0 190,138 0,261" fill="#464E35" opacity="0.96" />
+                    <polygon points="380,0 190,138 380,261" fill="#424A32" opacity="0.96" />
+                    <polygon points="0,261 190,122 380,261" fill="#4A5238" />
+                    <line x1="0" y1="261" x2="190" y2="122" stroke="rgba(216, 210, 197, 0.22)" stroke-width="1" />
+                    <line x1="380" y1="261" x2="190" y2="122" stroke="rgba(216, 210, 197, 0.22)" stroke-width="1" />
+                </svg>
+            </div>
+
+            <!-- Solapa superior triangular en V -->
+            <div class="envelope-top-flap">
+                <div class="envelope-top-flap-shape"></div>
+            </div>
+
+            <!-- Sello de Lacre con iniciales -->
+            <div class="wax-seal-btn" aria-hidden="true">
+                <div class="wax-seal-inner">
+                    <span class="font-serif text-[13px] font-semibold tracking-wider text-oliveDeep">D&amp;G</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Indicación sutil de interacción -->
+        <button id="open-hint-btn" type="button" class="mt-7 group flex flex-col items-center gap-1.5 cursor-pointer focus:outline-none">
+            <span class="font-sans text-[10px] font-medium tracking-ultra uppercase text-oliveDeep group-hover:text-charcoalText transition-colors">
+                Tocar para abrir
+            </span>
+            <span class="w-8 h-[1px] bg-oliveBase/45 group-hover:w-14 transition-all duration-300"></span>
+        </button>
+    </div>
+
+    <!-- =========================================================================
+         2. TARJETA EDITORIAL PRINCIPAL (SAVE THE DATE)
+         ========================================================================= -->
+    <main id="invitation-main" class="invitation-wrapper hidden w-full max-w-[460px] sm:my-10 bg-ivoryBg sm:rounded-md sm:shadow-[0_24px_60px_rgba(44,44,44,0.14)] border border-stoneBorder/70 overflow-hidden flex-col">
+
+        <!-- BLOQUE SUPERIOR: CABECERA EN VERDE OLIVA PROFUNDO (#4A5238) -->
+        <section class="paper-olive text-ivoryBg px-7 pt-12 pb-11 flex flex-col items-center text-center relative">
+            
+            <!-- Monograma superior -->
+            <div class="w-11 h-11 rounded-full border border-stoneBorder/40 flex items-center justify-center mb-5">
+                <span class="font-serif text-xs tracking-editorial text-ivoryBg/95">D&amp;G</span>
+            </div>
+
+            <!-- Subtítulo superior -->
+            <p class="font-sans text-[10px] font-normal tracking-ultra uppercase text-stoneBorder mb-5">
+                SAVE THE DATE
+            </p>
+
+            <!-- Nombres principales con Great Vibes y '&' en Cormorant Garamond itálica -->
+            <h1 class="font-script text-[54px] sm:text-[62px] leading-[0.98] font-normal text-ivoryBg drop-shadow-[0_2px_4px_rgba(0,0,0,0.12)] mb-5">
+                David <span class="editorial-amp text-goldAccent">&amp;</span> Gonzalo
+            </h1>
+
+            <!-- Ornamento divisor fino -->
+            <div class="flex items-center justify-center gap-3 w-full max-w-[180px] my-2">
+                <span class="h-[1px] flex-1 bg-stoneBorder/35"></span>
+                <span class="w-1.5 h-1.5 rotate-45 border border-goldAccent"></span>
+                <span class="h-[1px] flex-1 bg-stoneBorder/35"></span>
+            </div>
+
+            <!-- Frase solicitada -->
+            <p class="font-serif italic text-[19px] sm:text-[20px] leading-[1.55] text-ivoryBg/95 max-w-[310px] mt-4">
+                “Nos casamos y queremos que seas parte de este día tan especial”
+            </p>
+        </section>
+
+        <!-- BLOQUE CENTRAL: MARCO ARQUEADO, FECHA, CUENTA REGRESIVA Y CALENDARIO (Marfil #F8F6F2) -->
+        <section class="paper-ivory text-charcoalText px-7 py-11 flex flex-col items-center text-center border-b border-stoneBorder/70">
+            
+            <!-- Marco Arqueado para Fotografía de la Pareja + Botón discreto de prueba -->
+            <div class="relative w-full max-w-[270px] sm:max-w-[290px] mb-8 group">
+                <div class="aspect-[3/4] w-full rounded-t-full overflow-hidden border border-stoneBorder bg-white p-1.5 shadow-[0_14px_32px_rgba(44,44,44,0.08)]">
+                    <div class="w-full h-full rounded-t-full overflow-hidden relative bg-stoneBorder/20">
+                        <img 
+                            id="couple-photo"
+                            src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" 
+                            onerror="this.onerror=null;this.src='https://placehold.co/600x800/4A5238/F8F6F2?text=David+%26+Gonzalo';"
+                            alt="David y Gonzalo" 
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        >
+                    </div>
+                </div>
+
+                <!-- Botón discreto para cargar foto personalizada -->
+                <label for="photo-upload-input" class="absolute bottom-3 right-3 bg-ivoryBg/92 hover:bg-ivoryBg text-oliveDeep border border-stoneBorder rounded-full px-3 py-1.5 font-sans text-[8.5px] tracking-editorial uppercase shadow-sm cursor-pointer transition-all flex items-center gap-1.5">
+                    <svg class="w-3 h-3 text-oliveBase" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                        <circle cx="12" cy="13" r="3"/>
+                    </svg>
+                    <span>Probar foto</span>
+                </label>
+                <input type="file" id="photo-upload-input" accept="image/*" class="hidden">
+            </div>
+
+            <!-- Fecha y Ubicación Editorial -->
+            <div class="border-y border-stoneBorder py-4 w-full max-w-[320px] mb-7">
+                <p class="font-sans text-[11px] sm:text-xs font-medium tracking-editorial uppercase text-oliveDeep">
+                    26 de Febrero, 2027 &bull; Mendoza
+                </p>
+            </div>
+
+            <!-- Cuenta Regresiva Minimalista en Tiempo Real -->
+            <div class="w-full max-w-[320px] bg-white/80 border border-stoneBorder rounded-sm py-4 px-4 mb-8">
+                <p class="font-sans text-[8.5px] font-medium tracking-ultra uppercase text-oliveBase mb-2.5">
+                    FALTAN
+                </p>
+
+                <div class="grid grid-cols-4 divide-x divide-stoneBorder/80">
+                    <div class="flex flex-col items-center px-1">
+                        <span id="cd-days" class="font-serif text-[26px] sm:text-[30px] leading-none text-charcoalText">00</span>
+                        <span class="font-sans text-[8px] tracking-editorial uppercase text-charcoalText/65 mt-1.5">Días</span>
+                    </div>
+                    <div class="flex flex-col items-center px-1">
+                        <span id="cd-hours" class="font-serif text-[26px] sm:text-[30px] leading-none text-charcoalText">00</span>
+                        <span class="font-sans text-[8px] tracking-editorial uppercase text-charcoalText/65 mt-1.5">Horas</span>
+                    </div>
+                    <div class="flex flex-col items-center px-1">
+                        <span id="cd-minutes" class="font-serif text-[26px] sm:text-[30px] leading-none text-charcoalText">00</span>
+                        <span class="font-sans text-[8px] tracking-editorial uppercase text-charcoalText/65 mt-1.5">Min</span>
+                    </div>
+                    <div class="flex flex-col items-center px-1">
+                        <span id="cd-seconds" class="font-serif text-[26px] sm:text-[30px] leading-none text-charcoalText">00</span>
+                        <span class="font-sans text-[8px] tracking-editorial uppercase text-charcoalText/65 mt-1.5">Seg</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón 'Agregar al Calendario' -->
+            <button 
+                type="button" 
+                id="open-calendar-modal"
+                class="w-full max-w-[270px] py-3.5 px-6 bg-oliveDeep hover:bg-oliveBase text-ivoryBg rounded-sm font-sans text-[10px] font-medium tracking-editorial uppercase transition-all duration-300 shadow-sm hover:shadow flex items-center justify-center gap-2.5 cursor-pointer"
+            >
+                <svg class="w-4 h-4 text-stoneBorder" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>Agregar al Calendario</span>
+            </button>
+        </section>
+
+        <!-- BLOQUE INFERIOR: TEASER DE MISTERIO EN VERDE OLIVA (#4A5238) -->
+        <section class="paper-olive text-ivoryBg px-8 pt-10 pb-20 sm:pb-12 flex flex-col items-center text-center">
+            
+            <!-- Icono sutil de sobre -->
+            <svg class="w-5 h-5 text-goldAccent mb-3.5 opacity-90" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+
+            <!-- Frase exacta solicitada -->
+            <p class="font-serif italic text-[18px] leading-[1.55] text-ivoryBg/95 max-w-[295px]">
+                Muy pronto recibirás más información con todos los detalles.
+            </p>
+
+            <!-- Divisor fino -->
+            <div class="w-16 h-[1px] bg-stoneBorder/40 my-6"></div>
+
+            <!-- Monograma y enlace sutil para volver a ver el sobre -->
+            <span class="font-serif text-base tracking-ultra uppercase text-stoneBorder">
+                D &amp; G
+            </span>
+            <button type="button" id="replay-envelope-btn" class="mt-3 font-sans text-[8.5px] tracking-editorial uppercase text-ivoryBg/60 hover:text-ivoryBg underline underline-offset-4 transition-colors cursor-pointer">
+                Volver a ver sobre
+            </button>
+        </section>
+
+    </main>
+
+    <!-- =========================================================================
+         3. REPRODUCTOR DE MÚSICA AMBIENTAL FLOTANTE
+         ========================================================================= -->
+    <div id="floating-player" class="hidden fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-30 bg-oliveDeep/95 backdrop-blur-md text-ivoryBg border border-stoneBorder/30 rounded-full pl-3 pr-4 py-2 shadow-[0_10px_28px_rgba(30,34,24,0.32)] flex items-center gap-3 transition-all duration-500">
+        
+        <!-- Botón circular Play / Pause -->
+        <button 
+            type="button" 
+            id="player-toggle-btn" 
+            aria-label="Reproducir o pausar música"
+            class="w-8 h-8 rounded-full bg-ivoryBg text-oliveDeep hover:bg-stoneBorder flex items-center justify-center transition-colors shrink-0 cursor-pointer"
+        >
+            <!-- Icono Play -->
+            <svg id="player-icon-play" class="w-3.5 h-3.5 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+            <!-- Icono Pause -->
+            <svg id="player-icon-pause" class="w-3.5 h-3.5 hidden" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>
+        </button>
+
+        <!-- Información de la canción -->
+        <div class="flex flex-col text-left pr-1">
+            <span class="font-sans text-[8px] tracking-editorial uppercase text-stoneBorder/85 leading-none mb-0.5">
+                Nuestra canción
+            </span>
+            <span class="font-serif italic text-[13.5px] text-ivoryBg leading-tight whitespace-nowrap">
+                Amor es presente — Lali
+            </span>
+        </div>
+
+        <!-- Indicador visual de ondas de sonido animadas -->
+        <div id="sound-wave-indicator" class="flex items-end gap-[2.5px] h-4 pl-1" aria-hidden="true">
+            <span class="sound-bar"></span>
+            <span class="sound-bar"></span>
+            <span class="sound-bar"></span>
+            <span class="sound-bar"></span>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         4. MODAL DE CALENDARIO (.ICS + Google Calendar)
+         ========================================================================= -->
+    <div id="calendar-modal" class="modal-overlay fixed inset-0 z-50 bg-charcoalText/50 backdrop-blur-xs flex items-center justify-center p-5 opacity-0 invisible">
+        <div class="modal-panel paper-ivory border border-stoneBorder rounded-md max-w-[350px] w-full p-7 text-center transform scale-95 opacity-0 relative shadow-2xl">
+            
+            <button 
+                type="button" 
+                id="close-calendar-modal" 
+                aria-label="Cerrar ventana"
+                class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full flex items-center justify-center text-charcoalText/60 hover:text-charcoalText hover:bg-stoneBorder/30 transition-colors cursor-pointer"
+            >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <span class="font-sans text-[9px] tracking-ultra uppercase text-oliveBase">Save the Date</span>
+            <h2 class="font-script text-[40px] text-charcoalText leading-tight mt-0.5">
+                David <span class="editorial-amp text-oliveDeep">&amp;</span> Gonzalo
+            </h2>
+            <p class="font-serif text-[15px] text-charcoalText/80 mt-1 mb-5 leading-snug">
+                26 de Febrero de 2027 · 21:00 hs<br>
+                <span class="text-oliveDeep font-medium">Mendoza, Argentina</span>
+            </p>
+
+            <div class="flex flex-col gap-3">
+                <!-- Opción 1: Descargar archivo .ICS -->
+                <button 
+                    type="button" 
+                    id="download-ics-btn"
+                    class="w-full py-3 px-4 bg-oliveDeep hover:bg-oliveBase text-ivoryBg rounded-sm font-sans text-[10px] font-medium tracking-editorial uppercase transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                >
+                    <svg class="w-3.5 h-3.5 text-goldAccent" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    <span>Descargar Calendario (.ics)</span>
+                </button>
+
+                <!-- Opción 2: Google Calendar -->
+                <a 
+                    id="google-calendar-btn"
+                    href="#" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="w-full py-3 px-4 border border-oliveDeep text-oliveDeep hover:bg-oliveDeep/10 rounded-sm font-sans text-[10px] font-medium tracking-editorial uppercase transition-colors flex items-center justify-center gap-2"
+                >
+                    <span>Abrir en Google Calendar</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // =================================================================
+            // 1. APERTURA 3D DEL SOBRE EN ETAPAS (Fluido en Móvil y Escritorio)
+            // =================================================================
+            const envelopeStage = document.getElementById('envelope-stage');
+            const envelopeTrigger = document.getElementById('envelope-trigger');
+            const openHintBtn = document.getElementById('open-hint-btn');
+            const replayEnvelopeBtn = document.getElementById('replay-envelope-btn');
+            const invitationMain = document.getElementById('invitation-main');
+            const floatingPlayer = document.getElementById('floating-player');
+
+            let isEnvelopeOpened = false;
+
+            function openEnvelopeExperience() {
+                if (isEnvelopeOpened) return;
+                isEnvelopeOpened = true;
+
+                // Iniciar música ("Amor Es Presente.mp3" o sintetizador ambiental de respaldo)
+                startMusic();
+
+                // Etapa 1 (0ms): Desvanecer sello y abrir solapa superior
+                envelopeStage.classList.add('step-flap');
+
+                // Etapa 2 (320ms): Cuando la solapa supera los 90°, enviarla detrás de la tarjeta
+                setTimeout(() => {
+                    envelopeStage.classList.add('step-flap-behind');
+                }, 320);
+
+                // Etapa 3 (520ms): Emerger tarjeta interior limpiamente por delante de la solapa abierta
+                setTimeout(() => {
+                    envelopeStage.classList.add('step-card-rise');
+                }, 520);
+
+                // Etapa 4 (1350ms): Fundido cruzado sutil hacia la tarjeta editorial principal
+                setTimeout(() => {
+                    invitationMain.classList.remove('hidden');
+                    invitationMain.classList.add('flex');
+                    floatingPlayer.classList.remove('hidden');
+
+                    void invitationMain.offsetWidth;
+                    invitationMain.classList.add('is-revealed');
+                    envelopeStage.classList.add('step-crossfade');
+                }, 1350);
+
+                // Etapa 5 (2200ms): Ocultar escena del sobre del flujo
+                setTimeout(() => {
+                    envelopeStage.classList.add('hidden');
+                }, 2200);
+            }
+
+            function resetEnvelopeExperience() {
+                isEnvelopeOpened = false;
+                envelopeStage.classList.remove('hidden', 'step-flap', 'step-flap-behind', 'step-card-rise', 'step-crossfade');
+                invitationMain.classList.remove('is-revealed');
+                setTimeout(() => {
+                    invitationMain.classList.add('hidden');
+                    invitationMain.classList.remove('flex');
+                }, 300);
+            }
+
+            envelopeTrigger.addEventListener('click', openEnvelopeExperience);
+            openHintBtn.addEventListener('click', openEnvelopeExperience);
+            replayEnvelopeBtn.addEventListener('click', resetEnvelopeExperience);
+            envelopeTrigger.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openEnvelopeExperience();
+                }
+            });
+
+            // =================================================================
+            // 2. REPRODUCTOR DE MÚSICA (MP3 Local + Respaldo Sintetizador Web Audio)
+            // =================================================================
+            const realAudio = document.getElementById('real-mp3-audio');
+            const playerToggleBtn = document.getElementById('player-toggle-btn');
+            const iconPlay = document.getElementById('player-icon-play');
+            const iconPause = document.getElementById('player-icon-pause');
+            const waveIndicator = document.getElementById('sound-wave-indicator');
+
+            let isPlaying = false;
+            let usingSynthFallback = false;
+            let audioCtx = null;
+            let chordTimer = null;
+            let chordIndex = 0;
+
+            const romanticChords = [
+                [174.61, 220.00, 261.63, 329.63],
+                [130.81, 196.00, 246.94, 329.63],
+                [146.83, 220.00, 261.63, 349.23],
+                [116.54, 174.61, 220.00, 293.66]
+            ];
+
+            function triggerWarmPadChord(freqs) {
+                if (!audioCtx) return;
+                const now = audioCtx.currentTime;
+
+                freqs.forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const filter = audioCtx.createBiquadFilter();
+                    const gain = audioCtx.createGain();
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.25);
+
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(850, now);
+
+                    gain.gain.setValueAtTime(0.0001, now + idx * 0.25);
+                    gain.gain.exponentialRampToValueAtTime(0.025, now + idx * 0.25 + 0.7);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.25 + 3.6);
+
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+
+                    osc.start(now + idx * 0.25);
+                    osc.stop(now + idx * 0.25 + 3.7);
+                });
+            }
+
+            function startSynthLoop() {
+                usingSynthFallback = true;
+                try {
+                    if (!audioCtx) {
+                        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                        audioCtx = new AudioContextClass();
+                    }
+                    if (audioCtx.state === 'suspended') {
+                        audioCtx.resume();
+                    }
+                    if (chordTimer) clearInterval(chordTimer);
+
+                    triggerWarmPadChord(romanticChords[chordIndex]);
+                    chordIndex = (chordIndex + 1) % romanticChords.length;
+
+                    chordTimer = setInterval(() => {
+                        triggerWarmPadChord(romanticChords[chordIndex]);
+                        chordIndex = (chordIndex + 1) % romanticChords.length;
+                    }, 3600);
+                } catch (err) {
+                    // Silencioso si el navegador bloquea Web Audio
+                }
+            }
+
+            function stopSynthLoop() {
+                if (chordTimer) {
+                    clearInterval(chordTimer);
+                    chordTimer = null;
+                }
+            }
+
+            function setPlayerState(playing) {
+                isPlaying = playing;
+                if (playing) {
+                    iconPlay.classList.add('hidden');
+                    iconPause.classList.remove('hidden');
+                    waveIndicator.classList.add('is-playing');
+                } else {
+                    iconPlay.classList.remove('hidden');
+                    iconPause.classList.add('hidden');
+                    waveIndicator.classList.remove('is-playing');
+                }
+            }
+
+            function startMusic() {
+                const playPromise = realAudio.play();
+                if (playPromise !== undefined) {
+                    playPromise
+                        .then(() => {
+                            usingSynthFallback = false;
+                            setPlayerState(true);
+                        })
+                        .catch(() => {
+                            // Si el MP3 local no está presente en el entorno de vista previa, activa el sintetizador ambiental
+                            startSynthLoop();
+                            setPlayerState(true);
+                        });
+                } else {
+                    startSynthLoop();
+                    setPlayerState(true);
+                }
+            }
+
+            function pauseMusic() {
+                if (!usingSynthFallback) {
+                    realAudio.pause();
+                }
+                stopSynthLoop();
+                setPlayerState(false);
+            }
+
+            playerToggleBtn.addEventListener('click', () => {
+                if (isPlaying) {
+                    pauseMusic();
+                } else {
+                    startMusic();
+                }
+            });
+
+            // =================================================================
+            // 3. PRUEBA DE FOTOGRAFÍA PERSONALIZADA EN EL MARCO ARQUEADO
+            // =================================================================
+            const photoInput = document.getElementById('photo-upload-input');
+            const couplePhoto = document.getElementById('couple-photo');
+
+            photoInput.addEventListener('change', (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                couplePhoto.src = URL.createObjectURL(file);
+                showToast('Fotografía actualizada');
+            });
+
+            // =================================================================
+            // 4. CUENTA REGRESIVA EN TIEMPO REAL (26 Feb 2027, 21:00 hs ART)
+            // =================================================================
+            const weddingDate = new Date('2027-02-26T21:00:00-03:00').getTime();
+            const elDays = document.getElementById('cd-days');
+            const elHours = document.getElementById('cd-hours');
+            const elMinutes = document.getElementById('cd-minutes');
+            const elSeconds = document.getElementById('cd-seconds');
+
+            function refreshCountdown() {
+                const diff = weddingDate - Date.now();
+                if (diff <= 0) {
+                    elDays.textContent = '00';
+                    elHours.textContent = '00';
+                    elMinutes.textContent = '00';
+                    elSeconds.textContent = '00';
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                elDays.textContent = String(days).padStart(2, '0');
+                elHours.textContent = String(hours).padStart(2, '0');
+                elMinutes.textContent = String(minutes).padStart(2, '0');
+                elSeconds.textContent = String(seconds).padStart(2, '0');
+            }
+
+            refreshCountdown();
+            setInterval(refreshCountdown, 1000);
+
+            // =================================================================
+            // 5. INTEGRACIÓN DE CALENDARIO (.ICS & Google Calendar)
+            // =================================================================
+            const eventDetails = {
+                title: 'Casamiento David y Gonzalo',
+                description: 'Save the Date — Casamiento de David y Gonzalo. Muy pronto recibirás más información con todos los detalles.',
+                location: 'Salón Bambú, Base Esperanza s/n, Luzuriaga, Maipú, Mendoza',
+                startUTC: '20270227T000000Z',
+                endUTC: '20270227T080000Z'
+            };
+
+            const gCalLink = document.getElementById('google-calendar-btn');
+            const gCalUrl = new URL('https://calendar.google.com/calendar/render');
+            gCalUrl.searchParams.set('action', 'TEMPLATE');
+            gCalUrl.searchParams.set('text', eventDetails.title);
+            gCalUrl.searchParams.set('dates', `${eventDetails.startUTC}/${eventDetails.endUTC}`);
+            gCalUrl.searchParams.set('details', eventDetails.description);
+            gCalUrl.searchParams.set('location', eventDetails.location);
+            gCalLink.href = gCalUrl.toString();
+
+            function generateAndDownloadICS() {
+                const icsLines = [
+                    'BEGIN:VCALENDAR',
+                    'VERSION:2.0',
+                    'PRODID:-//Invitaciones Web//David y Gonzalo//ES',
+                    'CALSCALE:GREGORIAN',
+                    'METHOD:PUBLISH',
+                    'BEGIN:VEVENT',
+                    'UID:casamiento-david-gonzalo-20270226@bodadavidygonzalo.com.ar',
+                    `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
+                    `DTSTART:${eventDetails.startUTC}`,
+                    `DTEND:${eventDetails.endUTC}`,
+                    `SUMMARY:${eventDetails.title}`,
+                    `DESCRIPTION:${eventDetails.description}`,
+                    `LOCATION:${eventDetails.location}`,
+                    'STATUS:CONFIRMED',
+                    'END:VEVENT',
+                    'END:VCALENDAR'
+                ].join('\r\n');
+
+                const blob = new Blob([icsLines], { type: 'text/calendar;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'Save_The_Date_David_y_Gonzalo.ics';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+
+                closeCalendarModal();
+                showToast('Calendario descargado (.ics)');
+            }
+
+            document.getElementById('download-ics-btn').addEventListener('click', generateAndDownloadICS);
+
+            // Control del Modal
+            const calendarModal = document.getElementById('calendar-modal');
+            const modalPanel = calendarModal.querySelector('.modal-panel');
+            const openModalBtn = document.getElementById('open-calendar-modal');
+            const closeModalBtn = document.getElementById('close-calendar-modal');
+
+            function openCalendarModal() {
+                calendarModal.classList.remove('invisible', 'opacity-0');
+                modalPanel.classList.remove('scale-95', 'opacity-0');
+                modalPanel.classList.add('scale-100', 'opacity-100');
+            }
+
+            function closeCalendarModal() {
+                calendarModal.classList.add('opacity-0');
+                modalPanel.classList.remove('scale-100', 'opacity-100');
+                modalPanel.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    calendarModal.classList.add('invisible');
+                }, 300);
+            }
+
+            openModalBtn.addEventListener('click', openCalendarModal);
+            closeModalBtn.addEventListener('click', closeCalendarModal);
+            calendarModal.addEventListener('click', (e) => {
+                if (e.target === calendarModal) closeCalendarModal();
+            });
+
+            // =================================================================
+            // 6. NOTIFICACIÓN TOAST
+            // =================================================================
+            let toastTimeout = null;
+            function showToast(text) {
+                const toast = document.getElementById('toast');
+                const toastMsg = document.getElementById('toast-msg');
+                toastMsg.textContent = text;
+
+                toast.classList.remove('opacity-0', '-translate-y-2');
+                toast.classList.add('opacity-100', 'translate-y-0');
+
+                if (toastTimeout) clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('opacity-100', 'translate-y-0');
+                    toast.classList.add('opacity-0', '-translate-y-2');
+                }, 2800);
+            }
+        });
+    </script>
+</body>
+</html>
